@@ -1,7 +1,8 @@
 {
   "app-id": "org.videolan.VLC",
+  "branch": "alpha",
   "runtime": "org.kde.Platform",
-  "runtime-version": "5.15-21.08",
+  "runtime-version": "5.15-22.08",
   "sdk": "org.kde.Sdk",
   "command": "vlc",
   "finish-args": [
@@ -23,7 +24,7 @@
   ],
   "add-extensions": {
     "org.videolan.VLC.Plugin": {
-      "versions": "3-5.15-21.08;3-21.08",
+      "versions": "4-5.15-22.08;4-22.08",
       "directory": "share/vlc/extra",
       "subdirectories": true,
       "merge-dirs": "plugins",
@@ -53,7 +54,7 @@
     "mkdir -p /app/share/vlc/extra",
     "ln -s /app/share/vlc/extra/plugins /app/lib/vlc/plugins/extra",
     "rm -f /app/lib/vlc/plugins/plugins.dat",
-    "/app/lib/vlc/vlc-cache-gen /app/lib/vlc/plugins"
+    "/app/bin/vlc.bin --reset-plugins-cache --no-audio --no-video --intf dummy vlc://quit"
   ],
   "build-options": {
     "env": {
@@ -545,8 +546,8 @@
       "sources": [
         {
           "type": "archive",
-          "url": "https://ffmpeg.org/releases/ffmpeg-4.4.3.tar.xz",
-          "sha256": "6c5b6c195e61534766a0b5fe16acc919170c883362612816d0a1c7f4f947006e"
+          "url": "https://ffmpeg.org/releases/ffmpeg-5.1.2.tar.xz",
+          "sha256": "619e706d662c8420859832ddc259cd4d4096a48a2ce1eefd052db9e440eef3dc"
         }
       ]
     },
@@ -654,13 +655,14 @@
       "name": "libplacebo",
       "buildsystem": "meson",
       "config-opts": [
-        "-Dvulkan=false"
+        "-Dvulkan=disabled",
+        "-Dopengl=disabled"
       ],
       "sources": [
         {
           "type": "archive",
-          "url": "https://github.com/haasn/libplacebo/archive/refs/tags/v0.2.1.tar.gz",
-          "sha256": "d5d920a1745e4209287d32e8b96a85127b61b843304813980e11104cd9f15e82"
+          "url": "https://github.com/haasn/libplacebo/archive/refs/tags/v5.229.1.tar.gz",
+          "sha256": "f861336cf789eebdf1ac0e8db5822cfff07eb96675ffcf84911ff6b1f431d309"
         }
       ]
     },
@@ -777,7 +779,6 @@
     },
     {
       "name": "vlc",
-      "rm-configure": true,
       "config-opts": [
         "BUILDCC=/usr/bin/gcc -std=gnu99",
         "--disable-a52"
@@ -799,7 +800,7 @@
         {
           "type": "git",
           "url": "https://code.videolan.org/videolan/vlc.git",
-          "tag": "3.0.18"
+          "commit": "284e3f6a8eb3e4cc358641283a68a13c942c1d36"
         },
         {
           "type": "file",
@@ -808,10 +809,6 @@
         {
           "type": "patch",
           "path": "vlc-fix-appdata.patch"
-        },
-        {
-          "type": "patch",
-          "path": "vlc-disc-shortcuts.patch"
         },
         {
           "type": "patch",
